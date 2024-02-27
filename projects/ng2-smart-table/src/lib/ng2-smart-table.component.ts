@@ -7,6 +7,7 @@ import { DataSource } from './lib/data-source/data-source';
 import { Row } from './lib/data-set/row';
 import { deepExtend, getPageForRowIndex } from './lib/helpers';
 import { LocalDataSource } from './lib/data-source/local/local.data-source';
+import {ChangePageResult} from "./components/pager/types";
 
 @Component({
   selector: 'ng2-smart-table',
@@ -28,6 +29,7 @@ export class Ng2SmartTableComponent implements OnChanges, OnDestroy {
   @Output() deleteConfirm = new EventEmitter<any>();
   @Output() editConfirm = new EventEmitter<any>();
   @Output() createConfirm = new EventEmitter<any>();
+  @Output('changePage') #changePage = new EventEmitter<ChangePageResult>();
   @Output() rowHover: EventEmitter<any> = new EventEmitter<any>();
 
   tableClass: string;
@@ -230,7 +232,8 @@ export class Ng2SmartTableComponent implements OnChanges, OnDestroy {
     return deepExtend({}, this.defaultSettings, this.settings);
   }
 
-  changePage($event: any) {
+  changePage(changePageResult: ChangePageResult) {
+    this.#changePage.emit(changePageResult);
     this.resetAllSelector();
   }
 
